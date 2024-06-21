@@ -18,7 +18,7 @@ const useGetVideoParticipants = () => {
       try {
         const res = await fetch(`/api/users/video/${roomId}`);
         const data = await res.json();
-
+        console.log(data);
         if (data.error) throw new Error(data.error);
 
         dispatch(addAllParticipants(data));

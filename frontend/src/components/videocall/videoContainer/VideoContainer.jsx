@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import VideoControlers from '../VideoControlers';
 
-import VideoCallProvider from '../../../hooks/socket/VideoCallProvider';
+// import VideoCallProvider from '../../../hooks/socket/VideoCallProvider';
 
 const VideoContainer = () => {
   const [UID, setUID] = useState('');
 
-  VideoCallProvider();
+  // VideoCallProvider();
 
   const videoCallData = useSelector((store) => store.videoCallStates);
   const userData = useSelector((store) => store.userInfo.userData);

@@ -10,7 +10,6 @@ export const sendMessage = async (req, res) => {
     const senderId = req.user._id;
 
     let chats = await Chatroom.findOne({ videoRoomId });
-
     const newMessage = new Message({
       videoRoomId,
       senderId,

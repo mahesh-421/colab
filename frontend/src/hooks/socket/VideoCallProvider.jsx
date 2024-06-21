@@ -29,7 +29,7 @@ const VideoCallProvider = () => {
 
   useEffect(() => {
     if (applicationStates.showVideoPage && applicationStates.authUser) {
-      const socket = io('/mediasoup');
+      // const socket = io('/mediasoup');
 
       //
 

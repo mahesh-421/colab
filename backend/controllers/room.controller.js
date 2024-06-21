@@ -8,7 +8,6 @@ export const createVideoRoom = async (req, res) => {
   try {
     const { id: videoRoomId } = req.params;
     const _id = req.user._id;
-
     //made new room in chatroom
     const chatroom = await Chatroom.create({ videoRoomId });
 

@@ -25,8 +25,7 @@ export const SocketVideoCallProvider = ({ children }) => {
 
   useEffect(() => {
     if (applicationStates.showVideoPage && applicationStates.authUser) {
-      // const socket = io('http://18.142.186.169:5000', {});
-      // const socket = io('http://localhost:5000', {});
+      // const socket = io('http://localhost:5000');
       const socket = io('/rooms');
 
       setSocket(socket);
