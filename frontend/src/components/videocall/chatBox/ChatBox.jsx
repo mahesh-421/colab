@@ -29,14 +29,16 @@ const ChatBox = () => {
   const fullName = userInfo.userData?.fullName;
 
   const handleSendMessage = async () => {
-    if (!message) return;
+    console.log('handleMessage', message);
+    if (message === '') return;
+    console.log('messageSent');
     await sendMessage(message, fullName);
     setMessage('');
   };
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
-    const handler = (e) => {
+    const closeChatBox = (e) => {
       if (
         !showChatboxRef.current?.contains(e.target) &&
         videoCallData.showSideBarOrChatBox === 'showChatBox'
@@ -44,64 +46,83 @@ const ChatBox = () => {
         dispatch(changeShowChatBox());
     };
 
-    window.addEventListener('mousedown', handler);
+    window.addEventListener('mousedown', closeChatBox);
 
-    return () => window.removeEventListener('mousedown', handler);
-  }, [videoCallData.showSideBarOrChatBox, videoCallData.messages]);
+    const textarea = document.querySelector('textarea');
+
+    const sendMessage = (e) => {
+      // console.log(e.code);
+      if (e.code === 'Enter') {
+        e.preventDefault();
+        handleSendMessage();
+      }
+    };
+
+    textarea.addEventListener('keydown', sendMessage);
+
+    return () => {
+      window.removeEventListener('mousedown', closeChatBox);
+      textarea.removeEventListener('keydown', sendMessage);
+    };
+  }, [videoCallData.showSideBarOrChatBox, videoCallData.messages, message]);
 
   return (
-    <div className="flex items-center">
-      {videoCallData.showSideBarOrChatBox === 'showChatBox' && (
-        <div
-          className="relative w-96 h-[95%] mx-1 rounded-b-lg bg-black text-black bg-opacity-40 z-20"
-          ref={showChatboxRef}
-        >
-          <div className="relative flex bg-blue-800 bg-opacity-80 rounded-t-lg">
-            <button
-              className="absolute left-0 z-10 w-10 h-10 m-1 p-2 cursor-pointer flex items-center "
-              onClick={() => dispatch(changeShowSideBar())}
-            >
-              <img className="w-6" src={peoples} />
-            </button>
-            <h1 className="font-bold h-12 w-full flex items-center justify-center text-white ">
-              Chats
-            </h1>
-            <button
-              className="absolute right-0 w-10 h-10 m-1 p-2 cursor-pointer flex items-center "
-              onClick={() => dispatch(changeShowChatBox())}
-            >
-              <img className="w-6" src={chat} />
-            </button>
-          </div>
-          <div className="w-full h-[85%] p-2">
-            <div className=" flex flex-col text-gray-400 h-full w-full overflow-y-scroll border border-gray-500 rounded-lg">
-              {videoCallData.messages?.map((chat) => (
-                <div ref={lastMessageRef} key={message._id}>
-                  <ChatMessage message={chat.message} name={chat.fullName} />
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="flex">
-            <textarea
-              className="resize-none focus:outline-none mr-2 ml-3 p-3 h-12 w-[80%] rounded-lg"
-              name="Message"
-              maxLength={140}
-              placeholder="Message limit 140 characters"
-              onFocus={(e) => (e.target.placeholder = '')}
-              onBlur={(e) => (e.target.placeholder = 'Message')}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            ></textarea>
-            <button
-              className="right-0 bottom w-10 h-10 m-1 p-2 cursor-pointer flex items-center bg-blue-800 bg-opacity-80 hover:bg-opacity-100 rounded-lg"
-              onClick={handleSendMessage}
-            >
-              <img className="w-6" src={send} />
-            </button>
+    <div
+      className={`flex items-center justify-center w-[90%] sm:w-auto ${
+        videoCallData.showSideBarOrChatBox === 'showChatBox'
+          ? 'block'
+          : 'hidden'
+      }`}
+    >
+      <div
+        className="relative w-96 h-[95%] mx-1 rounded-b-lg bg-black text-black bg-opacity-40 z-20"
+        ref={showChatboxRef}
+      >
+        <div className="relative flex bg-blue-800 bg-opacity-80 rounded-t-lg">
+          <button
+            className="absolute left-0 z-10 w-10 h-10 m-1 p-2 cursor-pointer flex items-center "
+            onClick={() => dispatch(changeShowSideBar())}
+          >
+            <img className="w-6" src={peoples} />
+          </button>
+          <h1 className="font-bold h-12 px-16 w-full flex items-center justify-center text-white ">
+            Chats
+          </h1>
+          <button
+            className="absolute right-0 w-10 h-10 m-1 p-2 cursor-pointer flex items-center "
+            onClick={() => dispatch(changeShowChatBox())}
+          >
+            <img className="w-6" src={chat} />
+          </button>
+        </div>
+        <div className="w-full h-[85%] p-2">
+          <div className=" flex flex-col text-gray-400 h-full w-full overflow-y-scroll border border-gray-500 rounded-lg">
+            {videoCallData.messages?.map((chat) => (
+              <div ref={lastMessageRef} key={message._id}>
+                <ChatMessage message={chat.message} name={chat.fullName} />
+              </div>
+            ))}
           </div>
         </div>
-      )}
+        <div className="flex">
+          <textarea
+            className="resize-none focus:outline-none mr-2 ml-3 p-3 h-12 w-[80%] rounded-lg"
+            name="Message"
+            maxLength={140}
+            placeholder="Message limit 140 characters"
+            onFocus={(e) => (e.target.placeholder = '')}
+            onBlur={(e) => (e.target.placeholder = 'Message')}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          ></textarea>
+          <button
+            className="right-0 bottom w-10 h-10 m-1 p-2 cursor-pointer flex items-center bg-blue-800 bg-opacity-80 hover:bg-opacity-100 rounded-lg"
+            onClick={handleSendMessage}
+          >
+            <img className="w-6" src={send} />
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -15,7 +15,7 @@ const VideoCallRoom = () => {
   useGetMessage();
 
   return (
-    <div className="flex h-screen w-screen">
+    <div className="flex h-screen w-screen justify-center">
       <div className="absolute h-full w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-hidden">
         <img className="h-full w-full" src={background} />
       </div>

@@ -26,9 +26,7 @@ const ColabRoom = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(changeFetchAllCodes());
     return () => {
-      // dispatch(changeFetchAllCodes());
       dispatch(removeAllCode());
     };
   }, []);
@@ -40,13 +38,11 @@ const ColabRoom = () => {
       </div>
 
       <CopyRoomId />
-
       <ChakraProvider>
         <Compiler />
       </ChakraProvider>
       {/* <VoiceCall /> */}
       <SideBar />
-
       {/* <ChatBox /> */}
     </div>
   );

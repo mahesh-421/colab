@@ -18,7 +18,11 @@ const VideoContainer = () => {
   // const { roomId } = useParams();
 
   return (
-    <div className="relative w-full h-full">
+    <div
+      className={`relative w-full h-full ${
+        videoCallData.showSideBarOrChatBox ? 'hidden sm:block' : ''
+      }`}
+    >
       <div className="absolute w-full h-full p-8 z-10 ">
         <div className="relative h-[85%] rounded-lg">
           <div className="flex flex-wrap py-10 justify-center items-center h-full w-full border-2 rounded-lg border-gray-500 overflow-scroll no-scrollbar ">
